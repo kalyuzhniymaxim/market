@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Корзина</h1>
+        <hr>
+        <table id="cartTable">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Стоимость</th>
+                </tr>
+            </thead>
+            <tbody id="cart-item"></tbody>
+        </table>
+        <p id="total-price">Общая стоимость: 0$</p>
+        <button class="order-btn">Оформить заказ</button>
+        <br>
+        <a href="market.html">Вернуться на страницу каталога</a>
+    </div>
+    <div class="goods" style="display: none"></div>
+
+    <script type="module" src="cart.js"></script>
+</body>
+</html>
