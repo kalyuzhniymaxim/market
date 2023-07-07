@@ -10,10 +10,12 @@ function renderCart() {
   //.Для каждого элемента массива(item) создается tr, строка таблицы. Создается ячейка для каждого из значений элемента массива(название, цена, количество)
   cartItems.forEach((item) => {
     const tr = document.createElement("tr");
+    const tdImage = document.createElement("td");
     const tdName = document.createElement("td");
     const tdPrice = document.createElement("td");
     const tdQuantity = document.createElement("td");
     const tdProductSum = document.createElement("td");
+
     //кнопки + и - для увеличения/уменьшения количества
     const plusButton = document.createElement("button");
     const minusButton = document.createElement("button");
@@ -24,14 +26,19 @@ function renderCart() {
     minusButton.classList.add("quantBtn");
     plusButton.classList.add("quantBtn");
     //--------------------------------------
-
+    //добавляем в ячейку tdImage элемент для отображения картинки
+    const imageInCart = document.createElement("img");
+    tdImage.appendChild(imageInCart);
+    imageInCart.setAttribute("src", item.imagePath);
+    imageInCart.style.width = "50px";
+    // **********************************************
     tdName.innerText = item.name;
     tdPrice.innerText = `${item.price}$`;
     //в одну ячейку размещаем кнопки +, - и количество
     tdQuantity.append(minusButton, item.quantity, plusButton);
     tdQuantity.classList.add("quantityCell");
     tdProductSum.innerText = `${item.price * item.quantity}$`;
-    tr.append(tdName, tdPrice, tdQuantity, tdProductSum);
+    tr.append(tdImage, tdName, tdPrice, tdQuantity, tdProductSum);
     cartItemsElement.appendChild(tr);
   });
   document.querySelector(
@@ -90,9 +97,5 @@ function loadCartItems() {
   }
 }
 
-
-
 //загрузка сохраненных товаров при загрузке страницы
 loadCartItems();
-
-

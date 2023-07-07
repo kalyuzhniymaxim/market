@@ -5,26 +5,52 @@ let totalPrice = 0;
 let totalQuantity = 0;
 let goodsList = [];
 let goods = document.querySelector(".goods");
+let categoryList = document.querySelectorAll(".categories li");
+
+categoryList.forEach((category) => {
+  category.addEventListener("click", () => {
+    //получаем название категории из каждого элемента
+    const selectedCategory = category.dataset.category;
+    //очищаем каталог
+    goods.innerHTML = "";
+    //фильтруем все товары по категории кликнутого элемента из сайдбара
+    const filteredGoods = goodsList.filter((good) => {
+      return selectedCategory == "all" || good.category == selectedCategory
+  });
+    //выводим отфильтрованные товары на экран
+    filteredGoods.forEach((good) => {
+      goods.innerHTML += new Good(
+        good.imagePath,
+        good.name,
+        good.description,
+        good.price,
+        good.id,
+        good.category
+      ).renderGood();
+    });
+    setListeners();
+  });
+});
 
 //класс товара
 class Good {
-  constructor(imagePath, name, description, price, id) {
+  constructor(imagePath, name, description, price, id, category) {
     this.imagePath = imagePath;
     this.name = name;
     this.description = description;
     this.price = price;
     this.id = id;
+    this.category = category;
   }
 
   renderGood() {
     return `
-            <div class="good" id="${this.id}">
-                <p>${this.id}</p>
+            <div class="good" id="${this.id}" data-category="${this.category}">
                 <img src="images/${this.imagePath}" alt="good">
-                <h2>${this.name}</h2>
-                <p>${this.description}</p>
+                <h2 class="good-name">${this.name}</h2>
+                <p class="good-description">${this.description}</p>
                 <p class="good-price">Цена: ${this.price}$</p>
-                <button class="add-to-cart-btn">Добавить в корзину</button>
+                <button class="add-to-cart-btn btn"><span>В корзину</span></button>
             </div>
     `;
   }
@@ -33,7 +59,7 @@ class Good {
 //функция отображения количества товаров в корзине на индикаторе.
 //можно вызывать при каждом изменении количества товаров в корзине(например, если вызывается метод saveCartItems)
 async function showCartLength() {
-  // document.querySelector("#cartIndicator").textContent = "";
+  document.querySelector("#cartIndicator").textContent = "0";
   document.querySelector("#cartIndicator").textContent = totalQuantity;
 }
 
@@ -44,7 +70,8 @@ function renderGoodsList() {
       good.name,
       good.description,
       good.price,
-      good.id
+      good.id,
+      good.category
     ).renderGood();
   });
 }
@@ -53,6 +80,8 @@ function renderGoodsList() {
 function addToCart(event) {
   //находим товар, в котором был совершен клик
   const good = event.target.closest(".good");
+  //получаем путь к изображению, обрезаем 'images/'
+  const goodImage = good.querySelector("img").getAttribute("src");
   //вытаскиваем название этого товара
   const goodName = good.querySelector("h2").textContent;
   //вытаскиваем цену товара. так как в строке содержатся не только цифры, заменяем их с помощью регулярного выражения на пустоту, т.е. удаляем из строки
@@ -66,7 +95,7 @@ function addToCart(event) {
   if (existingItem) {
     existingItem.quantity++;
   } else {
-    cartItems.push({ name: goodName, price: goodPrice, quantity: count });
+    cartItems.push({ imagePath: goodImage, name: goodName, price: goodPrice, quantity: count });
   }
   totalQuantity++;
   totalPrice += goodPrice;
@@ -83,7 +112,7 @@ function saveCartItems(cartItems, totalPrice) {
   localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
 }
 
-async function setListener() {
+async function setListeners() {
   //получаем коллекцию кнопок
   const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
   //вешаем на каждую кнопку слушатель клика, при котором вызовется метод addToCart
@@ -110,10 +139,10 @@ function handleSearch() {
   });
 }
 
-function loadFromLocalStorage() {
+async function loadFromLocalStorage() {
   const savedCartItems = localStorage.getItem("cartItems");
   const savedTotalPrice = localStorage.getItem("totalPrice");
-  const savedGoods = localStorage.getItem("goods");
+  // const savedGoods = localStorage.getItem("goods");
 
   if (savedCartItems) {
     cartItems = JSON.parse(savedCartItems);
@@ -124,13 +153,63 @@ function loadFromLocalStorage() {
     showCartLength();
   }
 
-  if (savedGoods) {
-    goodsList = JSON.parse(savedGoods);
+  try {
+    const response = await fetch("goods.json");
+    const data = await response.json();
+
+    goodsList = data.map((item) => {
+      return new Good(
+        item.imagePath,
+        item.name,
+        item.description,
+        item.price,
+        item.id,
+        item.category
+      );
+    });
+    // saveFromHtml();
     renderGoodsList();
-    setListener();
+    setListeners();
+  } catch (error) {
+    console.error("Ошибка при загрузке данных из JSON-файла:", error);
   }
+
+  // if (savedGoods) {
+  //   goodsList = JSON.parse(savedGoods);
+  //   renderGoodsList();
+  //   setListeners();
+  // }
 }
+
 
 loadFromLocalStorage();
 
 export { saveCartItems };
+
+
+
+//сохранение в массив текущей статической разметки
+// function saveFromHtml() {
+//   const allGood = goods.querySelectorAll(".good");
+//   allGood.forEach((item) => {
+//     const goodId = +item.getAttribute("id");
+//     const imgSrc = item.querySelector("img").getAttribute("src").slice(7);
+//     const goodname = item.querySelector(".good-name").textContent;
+//     const desc = item.querySelector(".good-description").textContent;
+//     const goodPrice = +item.querySelector(".good-price").textContent.replace(/\D/g, '');
+//     const goodCategory = item.dataset.category;
+
+//     const oneGood = {
+//       id: goodId,
+//       category: goodCategory,
+//       imagePath: imgSrc,
+//       name: goodname,
+//       description: desc,
+//       price: goodPrice
+//     };
+
+//     goodsList.push(oneGood);
+//   });
+//   console.log(goodsList);
+// }
+
