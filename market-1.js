@@ -22,10 +22,10 @@ categoryList.forEach((category) => {
       goods.innerHTML += new Good(
         good.imagePath,
         good.name,
-        good.oldPrice,
         good.price,
+        good.oldPrice,
         good.id,
-        good.category
+        good.category,
       ).renderGood();
     });
     setListeners();
@@ -34,13 +34,13 @@ categoryList.forEach((category) => {
 
 //класс товара
 class Good {
-  constructor(imagePath, name, oldPrice, price, id, category) {
+  constructor(imagePath, name, id, oldPrice,  price, category) {
+    this.id = id;
     this.imagePath = imagePath;
     this.name = name;
-    this.oldPrice = oldPrice;
     this.price = price;
-    this.id = id;
     this.category = category;
+    this.oldPrice = oldPrice;
   }
 
   renderGood() {
@@ -48,8 +48,9 @@ class Good {
             <div class="good" id="${this.id}" data-category="${this.category}">
                 <img src="images/${this.imagePath}" alt="good">
                 <h2 class="good-name">${this.name}</h2>
+                <div class="underline"></div>
                 <p class="good-price-old"> ${this.oldPrice}$</p>
-                <p class="good-price">Цена: ${this.price}$</p>
+                <p class="good-price"> ${this.price}$</p>
                 <button class="add-to-cart-btn btn"><span>В корзину</span></button>
             </div>
     `;
@@ -68,8 +69,8 @@ function renderGoodsList() {
     goods.innerHTML += new Good(
       good.imagePath,
       good.name,
-      good.oldPrice,
       good.price,
+      good.oldPrice,
       good.id,
       good.category
     ).renderGood();
@@ -80,6 +81,7 @@ function renderGoodsList() {
 function addToCart(event) {
   //находим товар, в котором был совершен клик
   const good = event.target.closest(".good");
+  // const goodOld = event.target.closest(".oldPrice")
   //получаем путь к изображению, обрезаем 'images/'
   const goodImage = good.querySelector("img").getAttribute("src");
   //вытаскиваем название этого товара
@@ -88,6 +90,9 @@ function addToCart(event) {
   const goodPrice = +good
     .querySelector(".good-price")
     .textContent.replace(/\D/g, "");
+  // const goodOldPrice = +goodOld
+  //   .querySelector(".good-old-price")
+  //   .textContent.replace(/\D/g, "");
   //Элемент массива представляет объект, который хранит название, цену и количество(при добавлении 1)
   //если товар уже есть в массиве, то увеличиваем его количество на 1.
   //если товара нет, то добавляем в массив
@@ -99,8 +104,9 @@ function addToCart(event) {
   }
   totalQuantity++;
   totalPrice += goodPrice;
+  // totalOldPrice += goodOldPrice
   showCartLength();
-  saveCartItems(cartItems, totalPrice);
+  saveCartItems(cartItems, totalPrice );
 }
 
 //метод сохранения объектов корзины в локальное хранилище браузера
@@ -110,6 +116,7 @@ function addToCart(event) {
 function saveCartItems(cartItems, totalPrice) {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
   localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
+  // localStorage.setItem("totalPrice", JSON.stringify(totalOldPrice));
 }
 
 async function setListeners() {
@@ -142,6 +149,7 @@ function handleSearch() {
 async function loadFromLocalStorage() {
   const savedCartItems = localStorage.getItem("cartItems");
   const savedTotalPrice = localStorage.getItem("totalPrice");
+  // const savedTotalOldPrice = localStorage.getItem("totalOldPrice");
   // const savedGoods = localStorage.getItem("goods");
 
   if (savedCartItems) {
@@ -161,8 +169,8 @@ async function loadFromLocalStorage() {
       return new Good(
         item.imagePath,
         item.name,
-        item.oldPrice,
         item.price,
+        item.oldPrice,
         item.id,
         item.category
       );

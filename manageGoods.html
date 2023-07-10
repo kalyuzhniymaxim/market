@@ -5,12 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление каталогом</title>
+    <link rel="stylesheet" href="manageGoods.css">
     <link rel="stylesheet" href="market.css">
 </head>
 <body>
+    <header>
+        <div class="cont">
+            <input type="checkbox" id="burger">
+            <label for="burger">&#8801;</label>
+        <nav class="link">
+            <a href="#">Новости</a>
+            <a href="">Мой аккаунт</a>
+            <a href="admin.html">Админка</a>
+            <a href="market.html">Каталог</a>
+            <a href="">Избранное</a>
+            <a href="cart.html" class="cart-icon">
+                <img src="images/basket.ico" alt="Корзина">
+                <div id="cartIndicator"></div>
+            </a>
+        </nav>
+        </div>
+        <div class="wrapper-2">
+            <img class="logo" src="logo.png" alt="logo" width="15%">
+            <div class="wrapper-1">
+                <p>8 800 000 00 00</p>
+                <p>с 9 до 21 без выходных</p>
+            </div>
+        </div>
+    </header>
     <div class="container">
         <h1>Каталог</h1>
-        <hr>
         <h3><button id="saveToJsonButton" onclick="saveToJson()">Сохранить в файл</button></h3>
         <table id="cartTable">
             <thead>
@@ -19,17 +43,16 @@
                     <th>Изображение</th>
                     <th style="width: 12%">Название</th>
                     <th style="width: 8%">Цена</th>
-                    <th style="width: 40%">Описание</th>
-                    <th style="width: 20%"></th>
+                    <th style="width: 8%"> Цена без сксидки</th>
+                    <th style="width: 20%">Редактировать</th>
                 </tr>
             </thead>
             <tbody id="good-item"></tbody>
         </table>
-        <br>
-        <a href="market.html">Вернуться на страницу каталога</a>
     </div>
     <div class="goods" style="display: none"></div>
 
     <script type="module" src="manageGoods.js"></script>
+    <script type="module" src="market.js"></script>
 </body>
 </html>

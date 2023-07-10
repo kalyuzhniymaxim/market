@@ -12,7 +12,8 @@ function renderGoods() {
     const tdImage = document.createElement("td");
     const tdName = document.createElement("td");
     const tdPrice = document.createElement("td");
-    const tdDescription = document.createElement("td");
+    const tdOldPrice = document.createElement("td");
+    // const tdDescription = document.createElement("td");
     const tdButtons = document.createElement("td");
 
     //кнопки + и - для увеличения/var уменьшения количества
@@ -34,10 +35,11 @@ function renderGoods() {
     tdId.innerText = item.id;
     tdName.innerText = item.name;
     tdPrice.innerText = `${item.price}$`;
-    tdDescription.innerText = item.description;
+    tdOldPrice.innerText = `${item.oldPrice}$`;
+    // tdDescription.innerText = item.description;
     //в одну ячейку размещаем кнопки +, - и количество
     tdButtons.append(editButton, deleteButton);
-    tr.append(tdId, tdImage, tdName, tdPrice, tdDescription, tdButtons);
+    tr.append(tdId, tdImage, tdName, tdPrice, tdOldPrice, tdButtons);
     goodsItemsElement.appendChild(tr);
   });
 }
@@ -62,8 +64,9 @@ async function loadFromLocalStorage() {
     goodsList = data.map((item) => ({
       imagePath: item.imagePath,
       name: item.name,
-      description: item.description,
+      // description: item.description,
       price: item.price,
+      oldPrice: item.oldPrice,
       id: item.id,
       category: item.category,
     }));
@@ -95,34 +98,41 @@ function editGood(item) {
   const form = document.createElement("form");
   const titleLabel = document.createElement("label");
   const titleInput = document.createElement("input");
-  const descriptionLabel = document.createElement("label");
-  const descriptionInput = document.createElement("input");
+  // const descriptionLabel = document.createElement("label");
+  // const descriptionInput = document.createElement("input");
   const priceLabel = document.createElement("label");
   const priceInput = document.createElement("input");
+  const oldPriceLabel = document.createElement("label");
+  const oldPriceInput = document.createElement("input");
   const saveButton = document.createElement("button");
 
   titleInput.value = item.name;
-  descriptionInput.value = item.description;
+  // descriptionInput.value = item.description;
   priceInput.value = item.price;
+  oldPriceInput.value = item.oldPrice;
 
   titleLabel.textContent = "Название товара:";
   titleInput.type = "text";
-  descriptionLabel.textContent = "Описание:";
-  descriptionInput.type = "text";
+  // descriptionLabel.textContent = "Описание:";
+  // descriptionInput.type = "text";
   priceLabel.textContent = "Цена:";
   priceInput.type = "number";
+  oldPriceLabel.textContent = "Цена без сксидки:";
+  oldPriceInput.type = "number";
   saveButton.textContent = "Сохранить";
 
   saveButton.addEventListener("click", (event) => {
     event.preventDefault();
     const updatedName = titleInput.value;
-    const updatedDescription = descriptionInput.value;
+    // const updatedDescription = descriptionInput.value;
     const updatedPrice = parseFloat(priceInput.value);
+    const updatedOldPrice = parseFloat(oldPriceInput.value);
 
-    if (updatedName && updatedDescription && !isNaN(updatedPrice)) {
+    if (updatedName  && !isNaN(updatedPrice) && !isNaN(updatedOldPrice)) {
       item.name = updatedName;
-      item.description = updatedDescription;
+      // item.description = updatedDescription;
       item.price = updatedPrice;
+      item.oldPrice = updatedOldPrice;
 
       dialog.close();
 
@@ -135,10 +145,12 @@ function editGood(item) {
   form.append(
     titleLabel,
     titleInput,
-    descriptionLabel,
-    descriptionInput,
+    // descriptionLabel,
+    // descriptionInput,
     priceLabel,
     priceInput,
+    oldPriceLabel,
+    oldPriceInput,
     saveButton
   );
 

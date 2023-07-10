@@ -25,7 +25,7 @@ document
     const selectedFile = image.files[0];
     const imagePath = selectedFile.name;
     let name = document.querySelector("#name").value;
-    let description = document.querySelector("#description").value;
+    let oldPrice = +document.querySelector("#oldPrice").value;
     let price = +document.querySelector("#price").value;
     let category = document.querySelector("#category").value;
 
@@ -38,7 +38,7 @@ document
     // const id = uuidv4();
 
     // Создание нового товара (объект класса Good)
-    const good = { id, category, imagePath, name, description, price };
+    const good = { id, category, imagePath, name, price, oldPrice };
 
     // Добавление нового товара
     existingGoods.push(good);
@@ -50,7 +50,7 @@ document
     // Очистка полей формы
     document.querySelector("#image-path").value = "";
     document.querySelector("#name").value = "";
-    document.querySelector("#description").value = "";
+    document.querySelector("#oldPrice").value = "";
     document.querySelector("#price").value = "";
     document.querySelector("#category").value;
   });

@@ -43,7 +43,7 @@ function renderCart() {
   });
   document.querySelector(
     "#total-price"
-  ).innerText = `Общая стоимость: ${totalPrice}$`;
+  ).innerText = `Общая стоимость: ${totalPrice}$`;  
 }
 //кнопка + увеличивает количество в корзине
 function increaseQuantity(item) {

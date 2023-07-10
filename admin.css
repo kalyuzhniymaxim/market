@@ -7,6 +7,8 @@
     font-family: sans-serif;
 }
 
+
+
 .container {
     max-width: 1200px;
     width: 100%;
@@ -14,33 +16,95 @@
 }
 
 header {
-    padding: 20px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #000;
-    margin-bottom: 15px;
-    background-color:lightgray;
+    padding-bottom: 10px; 
+    background-color: rgb(46, 39, 5);
+    color: rgb(255, 255, 255);
+    position:-webkit-sticky;
+    position:sticky;
+    top: 0;
+    z-index: 2;
 }
 
-nav {
+.logo{
+    filter: invert(100%)
+
+}
+.wrapper-2{
     display: flex;
-    justify-content: space-around;
-    flex-direction: column;
+    align-items: center;
+    order: -1;
+    flex-grow: 0;
 }
 
-a {
-    margin: 10px;
+#burger, [for=burger]{
+    display: none;
+}
+
+
+.link{
+    position: relative;
+    margin-left:-600px  ;
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.link a{
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+.cart-icon {
+    position: relative;
     display: block;
 }
 
+#cartIndicator {
+    position: absolute;
+    top: -13px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: red;
+    color: aliceblue;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+}
+
+nav img {
+    margin-top:-10px ;
+    filter: invert(100%);
+    width: 80%;
+}
+
+main {
+    position: relative;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+
+}
+.flex form:last-child{
+    margin-left: 20px;
+}
 /* ************************форма************************* */
 form {
-    background-color: #57d2f1;
+    /* background-color: rgb(203, 195, 176); */
+    background-color: rgb(239, 239, 239);
+    /* background-color: rgb(137, 128, 81); */
     border-radius: 15px;
     width: 50vw;
     margin: 20px auto;
     padding: 20px;
+    /* color: rgb(253, 253, 253); */
 }
 
 input, textarea, select {
@@ -49,12 +113,25 @@ input, textarea, select {
     border-radius: 10px;
     border-width: 0;
     display: block;
-    margin: 10px auto;
+    margin:10px auto;
+}
+
+label{
+    margin:10px 0;
+    min-width:100px ;
+}
+.flexx{
+    display: flex;
+    align-items:center ;
+}
+
+.center{
+    align-items: flex-start;
 }
 
 button {
     width: 50%;
-    background-color: #08708a;
+    background-color:rgb(62, 44, 119);
     color: white;
     border-width: 0;
     box-shadow: 5px 5px 8px rgba(0,0,0,0.3);
@@ -62,4 +139,5 @@ button {
     padding: 10px 20px;
     border-radius: 10px;
     display: block;
+    cursor: pointer;
 }
